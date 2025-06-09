@@ -18,6 +18,17 @@ pipeline {
                 // archiveArtifacts artifacts: 'composition_plan.yaml'
             }
         }
+
+        stage('CV') {
+            steps {
+                // navigate 서비스 시뮬레이션 테스트 수행
+                sh 'python CV/launch_gaz_sim.py composition_plan.yml'
+
+                // 결과 JSON 파일 아카이브
+                // archiveArtifacts artifacts: 'cv_results.json'
+            }
+        }
+
     }
 
     post {
