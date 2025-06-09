@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                // SCM에서 코드 클론
-                checkout scm
-            }
-        }
 
         stage('CI') {
             steps {
