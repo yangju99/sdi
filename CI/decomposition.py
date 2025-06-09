@@ -1,7 +1,7 @@
 import sys
 import yaml
 
-# 태스크와 서비스 이름 매핑...
+# 태스크와 서비스 이름 매핑....
 TASK_SERVICE_MAP = {
     "facial_detection": "bob_facial_detection",
     "navigate": "nav2",
