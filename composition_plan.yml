@@ -1,7 +1,0 @@
-tasks:
-- service: bob_facial_detection
-  task: facial_detection
-- service: nav2
-  task: navigate
-- service: ros-vosk
-  task: speech-to-text
