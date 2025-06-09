@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.10'  // 원하는 Python 이미지
+            // args '-v $PWD:/app -w /app'  // 현재 디렉토리를 컨테이너에 마운트
+        }
+    }
 
     stages {
 
