@@ -4,6 +4,11 @@ import subprocess
 import json
 from pathlib import Path
 
+
+
+# ros 프레임워크로 구현된 nav2 service를 gazebo simulation 환경에서 testing
+
+
 def load_yaml(yaml_path):
     try:
         with open(yaml_path, 'r') as f:
