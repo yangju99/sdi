@@ -1,28 +1,34 @@
 pipeline {
     agent any
 
-    stages {
+    environment {
+        CONTAINER_NAME = 'ros_gui'
+        WORK_DIR = '/root/sdi'
+    }
 
+    stages {
         stage('CI') {
             steps {
-                // decomposition.py 실행
+                echo 'Running decomposition locally...'
                 sh 'python CI/decomposition.py requirements.txt'
-
-                // 결과 yaml 파일 아티팩트로 저장
                 // archiveArtifacts artifacts: 'composition_plan.yaml'
             }
         }
 
         stage('CV') {
             steps {
-                // navigate 서비스 시뮬레이션 테스트 수행
-                sh 'python CV/launch_gaz_sim.py composition_plan.yml'
+                echo 'Copying repo into existing docker container...'
+                // sdi 디렉토리 전체 복사
+                sh 'docker cp ./ ${CONTAINER_NAME}:${WORK_DIR}'
 
-                // 결과 JSON 파일 아카이브
+                echo 'Running Gazebo simulation inside container...'
+                // 컨테이너에서 launch_gaz_sim 실행
+                sh """
+                    docker exec ${CONTAINER_NAME} bash -c "cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml"
+                """
                 // archiveArtifacts artifacts: 'cv_results.json'
             }
         }
-
     }
 
     post {

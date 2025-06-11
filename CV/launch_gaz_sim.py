@@ -32,14 +32,21 @@ def run_gazebo_simulation(service_name):
         "success": False  # 기본 실패로 시작
     }
 
-    # try:
-    #     # 실제 환경에 맞게 조정: 시뮬레이션 실행
-    #     subprocess.run(['ros2', 'launch', service_name, 'sim_launch.py'], check=True)
-    #     result["success"] = True
-    #     print("[INFO] Simulation completed successfully.")
-    # except subprocess.CalledProcessError as e:
-    #     print(f"[ERROR] Simulation failed: {e}")
-    #     result["success"] = False
+    try:
+        # cv.sh 실행
+        completed = subprocess.run(
+            ["bash", "cv.sh"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True  # 실패 시 예외 발생
+        )
+        print("[INFO] cv.sh output:\n", completed.stdout)
+        result["success"] = True
+
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] cv.sh failed with return code {e.returncode}")
+        print("stderr:\n", e.stderr)
 
     # 결과 저장
     save_results(result)
