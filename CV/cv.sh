@@ -5,12 +5,8 @@ source /opt/ros/humble/setup.bash
 # TurtleBot3 워크스페이스 빌드 경로
 source ~/turtlebot3_ws/install/setup.bash
 
-# Gazebo 설정 (선택)
-source /usr/share/gazebo/setup.sh
-
 # 환경 변수
 export TURTLEBOT3_MODEL=burger
-export ROS_DOMAIN_ID=30
 
 # shell 1: Gazebo 시뮬레이터 실행
 gnome-terminal -- bash -c "export TURTLEBOT3_MODEL=burger; ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py; exec bash"
