@@ -23,21 +23,17 @@ pipeline {
             steps {
                 // echo 'Copying repo into container over SSH...'
 
-                // // scp로 디렉토리 복사
-                // sh """
-                //     sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
-                //     sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
-                // """
+                // scp로 디렉토리 복사
+                sh """
+                    sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
+                    sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
+                """
 
-                // echo 'Running simulation inside container via SSH...'
-                // SSH로 명령 실행
-                // sh """
-                //     sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
-                //     'cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml'
-                // """
+                echo 'Running simulation inside container via SSH...'
+
                 sh """
                     sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
-                    'bash -l -c "bash cv.sh"'
+                    'bash -c "source ~/.bashrc && cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml"'
                 """
 
                 // archiveArtifacts artifacts: 'cv_results.json'
