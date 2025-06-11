@@ -1,9 +1,4 @@
 #!/bin/bash
-# ROS 2 설치 경로
-source /opt/ros/humble/setup.bash
-
-# TurtleBot3 워크스페이스 빌드 경로
-source ~/turtlebot3_ws/install/setup.bash
 
 # 환경 변수
 export TURTLEBOT3_MODEL=burger
