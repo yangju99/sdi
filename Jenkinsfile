@@ -33,7 +33,7 @@ pipeline {
                 // SSH로 명령 실행
                 sh """
                     sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
-                    'cd ${WORK_DIR} && python3 CV/cv.sh' 
+                    'cd ${WORK_DIR} && bash CV/cv.sh' 
                 """
                 // archiveArtifacts artifacts: 'cv_results.json'
             }
