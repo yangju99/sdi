@@ -7,6 +7,7 @@ pipeline {
         SSH_PORT = '2222'
         SSH_HOST = 'localhost'
         SSH_USER = 'root'
+        SSH_PASSWORD = '1234'
     }
 
     stages {
@@ -21,16 +22,17 @@ pipeline {
         stage('CV') {
             steps {
                 echo 'Copying repo into container over SSH...'
+
                 // scp로 디렉토리 복사
                 sh """
-                    ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
-                    scp -o StrictHostKeyChecking=no -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
+                    sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
+                    sshpass -p "${SSH_PASSWORD}" scp -o StrictHostKeyChecking=no -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
                 """
 
                 echo 'Running simulation inside container via SSH...'
                 // SSH로 명령 실행
                 sh """
-                    ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
+                    sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
                     'cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml'
                 """
                 // archiveArtifacts artifacts: 'cv_results.json'
