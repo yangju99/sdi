@@ -35,7 +35,7 @@ def run_gazebo_simulation(service_name):
     try:
         # cv.sh 실행
         completed = subprocess.run(
-            ["bash", "cv.sh"],
+            ["bash", "CV/cv.sh"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
