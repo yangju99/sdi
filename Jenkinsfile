@@ -23,14 +23,14 @@ pipeline {
                 echo 'Copying repo into container over SSH...'
                 // scp로 디렉토리 복사
                 sh """
-                    ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
-                    scp -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
+                    ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
+                    scp -o StrictHostKeyChecking=no -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
                 """
 
                 echo 'Running simulation inside container via SSH...'
                 // SSH로 명령 실행
                 sh """
-                    ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
+                    ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
                     'cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml'
                 """
                 // archiveArtifacts artifacts: 'cv_results.json'
