@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+# ROS2 환경 설정
+source /opt/ros/humble/setup.bash
+source ~/turtlebot3_ws/install/setup.bash
+
 # 터틀봇 모델 지정
 export TURTLEBOT3_MODEL=burger
 
