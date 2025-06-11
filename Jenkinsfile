@@ -33,7 +33,7 @@ pipeline {
 
                 sh """
                     sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
-                    'bash -c "source ~/.bashrc && cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml"'
+                    'bash -c "source ~/.bashrc && bash cv.sh"'
                 """
 
                 // archiveArtifacts artifacts: 'cv_results.json'
