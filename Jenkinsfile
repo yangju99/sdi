@@ -2,8 +2,11 @@ pipeline {
     agent any
 
     environment {
-        CONTAINER_NAME = 'ros_gui'
+        CONTAINER_NAME = 'ros'
         WORK_DIR = '/root/sdi'
+        SSH_PORT = '2222'
+        SSH_HOST = 'localhost'
+        SSH_USER = 'root'
     }
 
     stages {
@@ -17,14 +20,18 @@ pipeline {
 
         stage('CV') {
             steps {
-                echo 'Copying repo into existing docker container...'
-                // sdi 디렉토리 전체 복사
-                sh 'docker cp ./ ${CONTAINER_NAME}:${WORK_DIR}'
-
-                echo 'Running Gazebo simulation inside container...'
-                // 컨테이너에서 launch_gaz_sim 실행
+                echo 'Copying repo into container over SSH...'
+                // scp로 디렉토리 복사
                 sh """
-                    docker exec ${CONTAINER_NAME} bash -c "cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml"
+                    ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} 'rm -rf ${WORK_DIR}'
+                    scp -P ${SSH_PORT} -r . ${SSH_USER}@${SSH_HOST}:${WORK_DIR}
+                """
+
+                echo 'Running simulation inside container via SSH...'
+                // SSH로 명령 실행
+                sh """
+                    ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
+                    'cd ${WORK_DIR} && python3 CV/launch_gaz_sim.py composition_plan.yml'
                 """
                 // archiveArtifacts artifacts: 'cv_results.json'
             }
