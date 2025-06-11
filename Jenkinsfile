@@ -37,7 +37,7 @@ pipeline {
                 // """
                 sh """
                     sshpass -p "${SSH_PASSWORD}" ssh -o StrictHostKeyChecking=no -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} \\
-                    'bash cv.sh'
+                    'bash -l -c "bash cv.sh"'
                 """
 
                 // archiveArtifacts artifacts: 'cv_results.json'
