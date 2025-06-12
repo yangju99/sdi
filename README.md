@@ -20,17 +20,14 @@ description: CI 에서 얻어낸 ros node(service)들의 composition을 simulati
 
 input: composition_plan.yaml
 
-output: evaluation_result.json
+output: evaluation_result.json (test 성공 여부) 
 
 launch_gz_sim: composition_plan.yaml을 기반으로 cv.sh 생성 
 
 cv.sh: composition_plan.yaml파일에 명시된 service들에 해당하는 ros node를 launch 하는 스크립트 
 
 test case.json: 선택된 ros node들의 조합(composition)을 integration testing 하기 위한 test case.  
-  test input: voice of user 
-  ex) "deliver this book to bob"  
-  test output: ground truth of behavior of turtlebot 
-  ex) pose of bob in the predefined map  
+  ex) "deliver this book to bob", "deliver this book to John"  
 
 Note!! 
 ros server에 모든 서비스들이 ros node형태로 미리 정의되어 있어야 함. 
